@@ -115,10 +115,10 @@
     name: 'AppHeader',
     components: { StudentRequest },
     computed: {...mapGetters(['searchResp', 'admin', 'reqs', 'showCart']),
-        //  searchterms: {
-        //      get: function () { return this.$store.state.searchTerms },
-        //      set: function (val) { this.$store.commit('setSearchTerms', val)}
-        //  },
+        searchterms: {
+            get: function () { return this.$store.state.searchTerms },
+            set: function (val) { this.$store.commit('setSearchTerms', val)}
+        },
         showCart: {
             get: function () { return this.$store.state.showCart },
             set: function(val) { this.$store.commit('setShowCart', val)}
@@ -132,9 +132,9 @@
       //
       online: false,
       snackbar: false,
-      searchterms: "",
     }),
-    methods: {...mapActions(['setSearchResp', 'setAdmin', 'setToken', 'setShowCart', 'setNewSearchCounts']),
+    methods: {
+      ...mapActions(['setSearchResp', 'setSearchTerms', 'setAdmin', 'setToken', 'setShowCart', 'setNewSearchCounts']),
       logout() {
         this.setAdmin(false);
         this.setToken('');
@@ -142,16 +142,10 @@
         this.$router.push('/')
       },
       search: function() {
-        // this.setSearchTerms(this.searchterms)
+        this.setSearchTerms(this.searchterms)
         this.setNewSearchCounts(true)
-        // this.doSearch(true)
-        this.$router.push({
-          path: '/search',
-          query: {
-            term: this.searchterms,
-            page: 1,
-          }
-        })
+        this.doSearch(true)
+        this.$router.push('/search')
       },
       showSnackbar() {
         this.snackbar = true
