@@ -2,7 +2,7 @@ package routes
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"time"
@@ -35,7 +35,7 @@ func VersionInfo(c echo.Context) error {
 		})
 	}
 
-	data, err := ioutil.ReadAll(f)
+	data, err := io.ReadAll(f)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, models.Response{
 			Code:    http.StatusInternalServerError,
