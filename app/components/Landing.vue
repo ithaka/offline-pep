@@ -171,15 +171,9 @@
         }
       },
       search: function() {
-        // this.setSearchTerms(this.searchterms)
-        // this.doSearch(true)
-        this.$router.push({
-          path: '/search',
-          query: {
-            term: this.searchterms,
-            page: 1,
-          }
-        })    
+        this.setSearchTerms(this.searchterms)
+        this.doSearch(true)
+        this.$router.push('/search')
       },
       navTo: function(location) {
        // console.log('navto ', location)

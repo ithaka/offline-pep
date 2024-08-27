@@ -84,6 +84,8 @@ assemble-chromebook:
 	cp ./downloads/es_config/chromebook/elasticsearch.yml ./JSTOR-chromebook/JSTOR/es_config/elasticsearch.yml
 	cp -R ./downloads/index/ ./JSTOR-chromebook/JSTOR/es_data
 	cp -R ./downloads/pdfs ./JSTOR-chromebook/JSTOR/pdfs
+	cp manifest.json ./JSTOR-mac/JSTOR/manifest.json
+
 	cp ./shell/start.sh ./JSTOR-chromebook/start.sh
 	cp ./install_guides/chromebook/README.pdf ./JSTOR-chromebook/README.pdf
 	cp ./${BINARY_NAME}-chromebook ./JSTOR-chromebook/JSTOR/${BINARY_NAME}-chromebook
@@ -101,6 +103,7 @@ assemble-windows:
 
 	cp -R ${FRONTEND_DIR}/dist ./JSTOR-windows/JSTOR/dist
 	cp -R ./downloads/pdfs ./JSTOR-windows/JSTOR/pdfs
+	cp manifest.json ./JSTOR-mac/JSTOR/manifest.json
 
 	cp -R ./downloads/elasticsearch/windows/ ./JSTOR-windows/JSTOR
 	cp ./downloads/es_config/windows/elasticsearch.yml ./JSTOR-windows/JSTOR/elasticsearch-7.15.2/config/elasticsearch.yml
@@ -127,6 +130,7 @@ assemble-mac:
 
 	cp -R ${FRONTEND_DIR}/dist ./JSTOR-mac/JSTOR/dist
 	cp -R ./downloads/pdfs/ ./JSTOR-mac/JSTOR/pdfs
+	cp manifest.json ./JSTOR-mac/JSTOR/manifest.json
 
 	tar -xvf ./downloads/elasticsearch/mac/elasticsearch-7.15.2-darwin-x86_64.tar -C ./JSTOR-mac/JSTOR/elasticsearch/
 	mv ./JSTOR-mac/JSTOR/elasticsearch/elasticsearch-7.15.2/* ./JSTOR-mac/JSTOR/elasticsearch

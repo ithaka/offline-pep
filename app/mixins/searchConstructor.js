@@ -17,7 +17,8 @@ export default {
       'pubYearStart',
       'pubYearEnd',
       'newSearch',
-      'newSearchCounts'
+      'newSearchCounts',
+      'pageNo',
     ]),
     data: () => ({
     }),

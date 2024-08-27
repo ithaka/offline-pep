@@ -12,12 +12,18 @@
         <h2
           style="margin-top: -8px">
           <span v-if="searchResp.total">
-            Showing {{(pageNo - 1 ) * limit + 1}} - {{(pageNo ) * limit}} of  {{new Intl.NumberFormat('en-US').format(searchResp.total) || 0}} search results
+            Showing {{(pageNo - 1 ) * limit + 1}} - {{(pageNo ) * limit}} of  {{new Intl.NumberFormat('en-US').format(numResults) || 0}} search results.
           </span>
           <span v-else>
             No Results
           </span>
         </h2>
+        <p v-if="searchResp.total > maxResults">
+          <small>
+            {{ `Your search exceeds the maximum number of displayable results (${maxResults}).` }}
+          </small>
+        </p>
+
         <!--<p>{{ resultDescription }}</p>-->
       </v-col>
 
@@ -108,8 +114,7 @@
     <v-pagination
       class="pagination"
       depressed
-      v-model="pageNo"
-      @input="onPageChange"
+      v-model="currentPage"
       :total-visible="6"
       :length="numPages || 0"
     />
@@ -124,8 +129,22 @@
   export default {
     name: "Results",
     computed: {...mapGetters(['searching', 'searchResp', 'reqs', 'limit', 'searchReq', 'offset']),
+      currentPage: {
+        get: function () { return this.$store.state.pageNo },
+        set: function (val) {
+          this.$store.commit('setPageNo', val)
+          this.setOffset((this.pageNo - 1) * this.limit)
+          this.doSearch(false)
+        }
+      },
+      maxResults() {
+        return this.maxPages * 20
+      },
+      numResults() {
+        return (this.searchResp.total || 0) > this.maxResults ? this.maxResults : this.searchResp.total
+      },
       numPages() {
-          return Math.ceil(this.searchResp.total / this.limit)
+        return Math.ceil(this.numResults / this.limit)
       },
       resultDescription() {
         console.log('result!! ', this.searchReq)
@@ -133,52 +152,21 @@
       }
     },
     data: () => ({
-      pageNo: 1,
       success: 'Request submitted',
+      maxPages: 500,
     }),
     mixins: [ manageCart, searchConstructor ],
     mounted() {
-      this.setSearchTerms(this.$route.query.term)
-      this.pageNo = this.$route.query.page || 1
+      this.setSearchTerms("")
+      this.setPageNo(1)
       this.setOffset((this.pageNo - 1) * this.limit)
       this.doSearch(false)
     },
-    watch: {
-      '$route.query.page': function() {
-        this.pageNo = this.$route.query.page || 1
-        this.setOffset((this.pageNo - 1) * this.limit)
-        this.doSearch(false)
-      },
-      '$route.query.term': function() {
-        if (this.searchTerms!==this.$route.query.term) {
-          console.log("Setting term", this.$route.query.term)
-          this.setSearchTerms(this.$route.query.term)
-          this.doSearch(true)
-        }
-      },
-    },
     methods: {
       ...mapActions(['setSearchResp', 'setAdmin', 'setReqs', 'setLimit', 'setOffset', 'setSearchTerms']),
-      onPageChange() {
-        // this.setOffset((this.pageNo - 1) * this.limit)
-        this.$router.push({
-          path: '/search',
-          query: {
-            term: this.searchTerms,
-            page: this.pageNo,
-          }
-        })
-      },
       searchFor(topic) {
-        // this.setSearchTerms(topic)
-        // this.doSearch(true)
-        this.$router.push({
-          path: '/search',
-          query: {
-            term: topic,
-            page: 1,
-          }
-        })
+        this.setSearchTerms(topic)
+        this.doSearch(true)
       },
       viewPDF(doi) {
         this.$router.push({

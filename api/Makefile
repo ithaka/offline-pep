@@ -1,13 +1,15 @@
 mac:
-	# go mod tidy
-	# touch ./pdfs/keys/cert.pem
-	# touch ./pdfs/keys/ciphertext
-	# go run main.go keys --pw '${PK_PASSWORD}'
+	go mod tidy
+	touch ./pdfs/keys/cert.pem
+	touch ./pdfs/keys/key.pem
+	touch ./pdfs/keys/ciphertext
+	go run main.go keys --pw '${PK_PASSWORD}'
 	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -mod vendor -ldflags="-w -s -X '${PW_PATH}=${ADMIN_PASSWORD}'" -o ${BINARY_NAME}-mac
  
 windows:
 	go mod tidy
 	touch ./pdfs/keys/cert.pem
+	touch ./pdfs/keys/key.pem
 	touch ./pdfs/keys/ciphertext
 	go run main.go keys --pw '${PK_PASSWORD}'
 	CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -mod vendor -ldflags="-w -s -X '${PW_PATH}=${ADMIN_PASSWORD}'" -o ${BINARY_NAME}-windows.exe
