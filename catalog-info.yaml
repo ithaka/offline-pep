@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: offline-pep
-  description: Auto-generated catalog-info.yaml.
+  description: offline-pep
   tags:
   - go
   - vue
