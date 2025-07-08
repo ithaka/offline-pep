@@ -1,0 +1,10 @@
+name: Push to GitLab
+
+on: [push]
+
+jobs:
+  push-to-gitlab:
+    uses: ithaka/gh-action--push-to-gitlab/.github/workflows/push-to-gitlab.yml@v1
+    with:
+      gitlab-project-path: "capstan/platform-apps/labs/jaip/offline-pep"
+    secrets: inherit
